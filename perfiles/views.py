@@ -51,14 +51,18 @@ def mi_curso(request):
 
     if curso:
         presidente = Perfil.objects.filter(alumno__curso=curso, rol='presidente').first()
+        tesorero = Perfil.objects.filter(alumno__curso=curso, rol='tesorero').first()
         apoderados = Perfil.objects.filter(alumno__curso=curso).select_related('user', 'alumno')
     else:
         presidente = None
+        tesorero = None
         apoderados = []
 
     context = {
         'curso': curso,
         'presidente': presidente,
+        'tesorero': tesorero,
         'apoderados': apoderados,
+        'alumno_actual': alumno,
     }
     return render(request, 'perfiles/mi_curso.html', context)

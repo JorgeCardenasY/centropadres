@@ -18,6 +18,20 @@
                         No asignado
                     {% endif %}
                 </p>
+                <p><strong>Tesorero del Centro de Padres:</strong> 
+                    {% if tesorero %}
+                        {{ tesorero.user.get_full_name|default:tesorero.user.username }}
+                    {% else %}
+                        No asignado
+                    {% endif %}
+                </p>
+                <p><strong>Tu Alumno:</strong> 
+                    {% if alumno_actual %}
+                        {{ alumno_actual.nombre }}
+                    {% else %}
+                        No tienes un alumno asignado.
+                    {% endif %}
+                </p>
             </div>
         </div>
 
