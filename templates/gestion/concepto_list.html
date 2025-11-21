@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Conceptos de Pago{% endblock %}
+
+{% block content %}
+    <div class="max-w-4xl mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold text-center mb-6">Conceptos de Pago</h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden">
+            {% for concepto in conceptos %}
+                <a href="{% url 'concepto-detail' concepto.pk %}" class="block p-4 border-b border-gray-200 last:border-b-0 hover:bg-gray-50">
+                    <div class="flex justify-between items-center mb-1">
+                        <h5 class="text-lg font-semibold">{{ concepto.nombre }}</h5>
+                        <small class="text-gray-600">Total: ${{ concepto.monto_total }}</small>
+                    </div>
+                    <p class="text-gray-700 mb-1">{{ concepto.descripcion|truncatewords:20 }}</p>
+                    <small class="text-gray-500">{{ concepto.cantidad_cuotas }} cuotas.</small>
+                </a>
+            {% empty %}
+                <div class="p-4 text-gray-600">No hay conceptos de pago definidos.</div>
+            {% endfor %}
+        </div>
+        <div class="mt-6 text-center">
+            <a href="{% url 'pago-list' %}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Ver historial de todos mis pagos</a>
+        </div>
+    </div>
+{% endblock %}
+

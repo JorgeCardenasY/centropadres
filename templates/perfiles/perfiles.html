@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div id="background-container" style="background-image: url('{% static 'img/cloudBg.png' %}'); background-size: cover; padding-top: 8rem; padding-bottom: 4rem;">
+
+    <main class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">
+                <span class="block text-black">Perfiles de Usuario</span>
+                <span class="block text-blue-500 z-0 lg:inline">
+                    <p>Roles en la Comunidad Educativa</p>
+                </span>
+            </h1>
+            <p class="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0">
+                Nuestra aplicación permite la creación de diferentes perfiles de usuario, cada uno con roles y responsabilidades específicas para una gestión eficiente y colaborativa.
+            </p>
+        </div>
+
+        <!-- Bootstrap Carousel -->
+        <div id="perfilesCarousel" class="carousel slide mt-12" data-bs-ride="carousel">
+            <!-- Indicators/dots -->
+            <div class="carousel-indicators">
+                <button type="button" data-bs-target="#perfilesCarousel" data-bs-slide-to="0" class="active"></button>
+                <button type="button" data-bs-target="#perfilesCarousel" data-bs-slide-to="1"></button>
+                <button type="button" data-bs-target="#perfilesCarousel" data-bs-slide-to="2"></button>
+                <button type="button" data-bs-target="#perfilesCarousel" data-bs-slide-to="3"></button>
+            </div>
+
+            <!-- The slideshow/carousel -->
+            <div class="carousel-inner">
+                <!-- Carousel Item for Administrador -->
+                <div class="carousel-item active">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md">
+                        <h3 class="text-2xl font-bold text-blue-500">Administrador</h3>
+                        <p class="mt-2 text-gray-600">El perfil de Administrador tiene control total sobre la plataforma. Es responsable de la configuración general, la gestión de usuarios, la creación y modificación de conceptos de pago, y la supervisión de todas las transacciones y actividades. Este rol es crucial para mantener la integridad y el funcionamiento óptimo del sistema.</p>
+                        <ul class="mt-4 space-y-2">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Gestión completa de usuarios y perfiles.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Configuración de conceptos de pago y tarifas.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Acceso a reportes y estadísticas generales.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Mantenimiento y configuración del sistema.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Carousel Item for Padre/Tutor -->
+                <div class="carousel-item">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md">
+                        <h3 class="text-2xl font-bold text-green-500">Padre/Tutor</h3>
+                        <p class="mt-2 text-gray-600">El perfil de Padre/Tutor está diseñado para los representantes de los estudiantes. Permite visualizar los conceptos de pago asignados a sus hijos, realizar pagos, consultar el historial de transacciones y acceder a información relevante comunicada por la institución.</p>
+                        <ul class="mt-4 space-y-2">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Visualización de conceptos de pago.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Realización de pagos en línea.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Acceso al historial de pagos.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Recepción de comunicaciones.</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Carousel Item for Contador/Financiero -->
+                <div class="carousel-item">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md">
+                        <h3 class="text-2xl font-bold text-indigo-500">Contador/Financiero</h3>
+                        <p class="mt-2 text-gray-600">Este perfil está destinado al personal encargado de la contabilidad y las finanzas. Tiene acceso a herramientas para la conciliación de pagos, la generación de informes financieros detallados, la gestión de cobros y la auditoría de transacciones.</p>
+                        <ul class="mt-4 space-y-2">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Conciliación de pagos y cobros.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Generación de informes financieros.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Auditoría de transacciones.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Gestión avanzada de pagos.</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Carousel Item for Secretaría/Recepción -->
+                <div class="carousel-item">
+                    <div class="bg-white rounded-lg shadow-lg p-6 mx-auto max-w-md">
+                        <h3 class="text-2xl font-bold text-yellow-500">Secretaría/Recepción</h3>
+                        <p class="mt-2 text-gray-600">El perfil de Secretaría/Recepción asiste en la gestión diaria de la información de los estudiantes y sus familias. Puede registrar nuevos usuarios, asignar conceptos de pago básicos, y proporcionar soporte en consultas sobre estados de cuenta.</p>
+                        <ul class="mt-4 space-y-2">
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Registro y actualización de datos.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Asignación de conceptos de pago.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Consulta de estados de cuenta.</li>
+                            <li class="flex items-start"><span class="text-green-500 mr-2">&#10003;</span> Soporte y atención a padres.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Left and right controls/icons -->
+            <button class="carousel-control-prev" type="button" data-bs-target="#perfilesCarousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+            </button>
+            <button class="carousel-control-next" type="button" data-bs-target="#perfilesCarousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+            </button>
+        </div>
+        
+        <p class="mt-10 text-center text-lg text-gray-700">La correcta asignación y gestión de estos perfiles asegura que cada miembro de la comunidad educativa tenga las herramientas y la información necesaria para cumplir con sus funciones, promoviendo un ambiente organizado y colaborativo.</p>
+
+    </main>
+</div>
+{% endblock %}

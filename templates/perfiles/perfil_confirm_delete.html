@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación{% endblock %}
+
+{% block content %}
+    <div class="max-w-md mx-auto px-4 py-8 bg-white shadow-md rounded-lg">
+        <h1 class="text-2xl font-bold text-center mb-4">¿Estás seguro de que quieres eliminar el perfil de "{{ object.user.username }}"?</h1>
+        <p class="text-center text-gray-600 mb-6">Esta acción no se puede deshacer.</p>
+        <form method="post" class="flex justify-center space-x-4">
+            {% csrf_token %}
+            <button type="submit" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline">Confirmar</button>
+            <a href="{% url 'perfil-list' %}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

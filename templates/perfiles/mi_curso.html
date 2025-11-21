@@ -1,0 +1,48 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="container mt-5">
+    {% if curso %}
+        <h1 class="mb-4">Información del Curso: {{ curso.nombre_curso }}</h1>
+        
+        <div class="card mb-4">
+            <div class="card-header">
+                Detalles del Curso
+            </div>
+            <div class="card-body">
+                <p><strong>Colegio:</strong> {{ curso.nombre_colegio }}</p>
+                <p><strong>Presidente del Centro de Padres:</strong> 
+                    {% if presidente %}
+                        {{ presidente.user.get_full_name|default:presidente.user.username }}
+                    {% else %}
+                        No asignado
+                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                Lista de Apoderados y Alumnos
+            </div>
+            <div class="card-body">
+                <ul class="list-group">
+                    {% for apoderado in apoderados %}
+                        <li class="list-group-item">
+                            <strong>Apoderado:</strong> {{ apoderado.user.get_full_name|default:apoderado.user.username }} 
+                            - <strong>Alumno:</strong> {{ apoderado.alumno.nombre }}
+                        </li>
+                    {% empty %}
+                        <li class="list-group-item">No hay apoderados en este curso.</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            No estás asignado a ningún curso. Por favor, contacta al administrador.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
