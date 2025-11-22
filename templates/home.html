@@ -1,15 +1,13 @@
 {% extends 'base.html' %} {% load static %} {% block title %}Inicio - Centro de
 Padres{% endblock %} {% block content %}
-<div
-  id="background-container"
-  style="
-    background-image: url('{% static 'img/cloudBg.png' %}');
-    background-size: cover;
-  "
->
+<div 
+     id="background-container" 
+     style="background-image: url('{% static 'img/cloudBg.png' %}'); background-size: cover;"
+     data-light-bg="{% static 'img/cloudBg.png' %}"
+     data-dark-bg="{% static 'img/cloudDark.png' %}">
   <main
     class="container d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-between min-vh-100 py-5"
-    id="/"
+    id="top"
   >
     <div class="text-center text-lg-start">
       <h1 class="display-4 fw-bold">
@@ -33,12 +31,28 @@ Padres{% endblock %} {% block content %}
   </main>
 </div>
 
-<div id="about" class="bg-white py-5">
+<div id="porque" class="bg-white py-5">
   <div class="container">
     <h2 class="text-center mb-5 display-4 fw-bold">¿PORQUÉ SchoolPay?</h2>
-    <div class="row">
-      <div class="col-12">
+
+    <div class="row align-items-center">
+      <div class="col-md-6 text-center">
+        <img
+          src="{% static 'img/smartphone.png' %}"
+          alt="Vista de SchoolPay App versión Smartphone"
+          class="img-fluid mb-4 mb-md-0"
+          style="
+            max-width: 300px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            box-shadow: 8px 8px rgba(0, 0, 0, 0.1);
+          "
+        />
+      </div>
+
+      <div class="col-md-6">
         <h4 class="mt-4 text-primary">La Gestión de Pagos</h4>
+
         <p class="lead text-justify text-secondary">
           La gestión de los pagos de los Centros de Padres y Apoderados no es un
           problema con nosotros. SchoolPay te ayuda a definir distintos
@@ -48,9 +62,9 @@ Padres{% endblock %} {% block content %}
           fundamentales, asegurando la transparencia y ayudando a la eficiencia
           en la administración de recursos.
         </p>
-      </div>
-      <div class="col-12">
+
         <h4 class="mt-4 text-primary">Nuestras Tecnologías y Herramientas</h4>
+
         <p class="lead text-justify text-secondary">
           Usando una combinación de tecnologías de vanguardia y software
           confiable, te ayudamos a registrar y compartir reportes y estados de
@@ -60,6 +74,151 @@ Padres{% endblock %} {% block content %}
           smartphones, tablets y equipos de escritorio.
         </p>
       </div>
+    </div>
+  </div>
+</div>
+
+<!-- Falta Agregar acá descripción de los perfiles de los usuarios-->
+
+<div id="testimonials" class="py-5 bg-light">
+  <div class="container">
+    <h2 class="text-center mb-5 display-4 fw-bold">
+      Lo que dicen nuestros Padres
+    </h2>
+
+    <div
+      id="testimonialsCarousel"
+      class="carousel slide carousel-dark"
+      data-bs-ride="carousel"
+    >
+      <div class="carousel-inner">
+        <!-- Testimonial 1 -->
+
+        <div class="carousel-item active">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "Excelente plataforma para la gestión de pagos. Súper intuitiva y
+              fácil de usar. ¡Recomendada!"
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">María G. - Apoderada</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 2 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "Nos ha facilitado mucho la administración de cuotas y la
+              comunicación con los apoderados. Un gran avance."
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Juan P. - Tesorero Centro Padres</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 3 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "Al principio dudé, pero la transparencia que ofrece es
+              inigualable. Todos están contentos con el sistema."
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Ana R. - Directora</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 4 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "La mejor herramienta para llevar el control de los ingresos y
+              egresos del centro de padres. ¡Simplifica todo!"
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Carlos S. - Apoderado</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 5 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "Una solución moderna y eficaz. Adiós a los problemas de rendición
+              de cuentas."
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Luisa F. - Secretaria Centro Padres</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 6 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "Me encanta la interfaz, muy amigable. Hace que la tarea de pagar
+              sea mucho más cómoda."
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Roberto A. - Apoderado</h5>
+          </div>
+        </div>
+
+        <!-- Testimonial 7 -->
+
+        <div class="carousel-item">
+          <div class="d-flex flex-column align-items-center text-center p-4">
+            <p class="lead mb-3">
+              "La comunicación ha mejorado drásticamente. Ahora sabemos
+              exactamente en qué se usa cada peso."
+            </p>
+
+            <div class="text-warning mb-2">⭐ ⭐ ⭐ ⭐</div>
+
+            <h5 class="fw-bold">Sofía L. - Directiva Centro Padres</h5>
+          </div>
+        </div>
+      </div>
+
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#testimonialsCarousel"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+
+        <span class="visually-hidden">Previous</span>
+      </button>
+
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#testimonialsCarousel"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+
+        <span class="visually-hidden">Next</span>
+      </button>
     </div>
   </div>
 </div>

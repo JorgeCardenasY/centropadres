@@ -1,44 +1,41 @@
-{% extends "base.html" %}
+{% extends "admin/login.html" %}
 {% load static %}
 
-{% block title %}Login - SchoolPay Admin{% endblock %}
+{% block extrastyle %}
+{{ block.super }}
+{% endblock %}
 
-{% block content %}
-<div id="background-container" style="background-image: url('{% static 'img/cloudBg.png' %}'); background-size: cover;">
-  <main class="mx-auto max-w-7xl px-4 sm:px-6 md:mt-0 lg:px-8 flex flex-col items-center justify-center h-screen ">
-    <div class="bg-white p-8 rounded-lg shadow-lg w-1/2 sm:w-2/3 lg:w-1/3 mx-auto text-center">
-      <img width="96" height="96" src="https://img.icons8.com/external-flaticons-lineal-color-flat-icons/96/external-login-web-development-flaticons-lineal-color-flat-icons.png" alt="external-login-web-development-flaticons-lineal-color-flat-icons" class="mx-auto mb-4"/>
-      <h1 class="text-2xl font-bold text-center text-gray-900 mb-6">Ingrese a su Sesión</h1>
-      
-      {% if form.errors and not form.non_field_errors %}
-        <p class="text-red-500 text-sm text-center mb-4 ">
-          Your username and password didn't match. Please try again.
-        </p>
-      {% endif %}
+{% block extrabody %}
+{{ block.super }}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const bodyElement = document.querySelector('body.login'); // target the specific body for login
+        const lightBg = "{% static 'img/cloudBg.png' %}";
+        const darkBg = "{% static 'img/cloudDark.png' %}";
 
-      {% if form.non_field_errors %}
-        {% for error in form.non_field_errors %}
-          <p class="text-red-500 text-sm text-center mb-4">{{ error }}</p>
-        {% endfor %}
-      {% endif %}
+        function setLoginBackground(theme) {
+            if (bodyElement) {
+                if (theme === 'dark') {
+                    bodyElement.style.backgroundImage = `url('${darkBg}')`;
+                } else {
+                    bodyElement.style.backgroundImage = `url('${lightBg}')`;
+                }
+                bodyElement.style.backgroundSize = 'cover';
+                bodyElement.style.backgroundRepeat = 'no-repeat';
+                bodyElement.style.backgroundPosition = 'center';
+            }
+        }
 
-      <form method="post" action="{{ app_path }}" class="py-5">
-        {% csrf_token %}
-        <div class="mb-4">
-          <label for="id_username" class="block mb-2 text-lg font-medium text-gray-900 text-justify">Ingrese su Nombre de Usuario</label>
-          <input type="text" name="username" id="id_username" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5" required>
-        </div>
-        <div class="mb-6">
-          <label for="id_password" class="block mb-2 text-lg font-medium text-gray-900 text-justify">Ingrese su Contraseña</label>
-          <input type="password" name="password" id="id_password" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5" required>
-        </div>
-        <div class="flex items-center justify-between">
-          <button type="submit" class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-700 md:py-4 md:text-lg md:px-10">
-            Login
-          </button>
-        </div>
-      </form>
-    </div>
-  </main>
-</div>
+        // Set initial background
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        setLoginBackground(savedTheme);
+
+        // Listen for changes from other tabs
+        window.addEventListener('storage', function(event) {
+            if (event.key === 'theme') {
+                setLoginBackground(event.newValue);
+            }
+        });
+    });
+</script>
 {% endblock %}

@@ -23,6 +23,7 @@ from .admin import my_admin_site
 urlpatterns = [
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
+    path('login/', my_admin_site.login, name='login'),
     path('admin/', my_admin_site.urls),
     path('accounts/', include('django.contrib.auth.urls')),
     path('mi_curso/', mi_curso, name='mi-curso'),
