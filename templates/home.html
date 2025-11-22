@@ -8,62 +8,38 @@ Padres{% endblock %} {% block content %}
   "
 >
   <main
-    class="mx-auto max-w-7xl px-4 sm:px-6 md:mt-0 lg:px-8 flex flex-col md:flex-row items-center justify-center md:justify-between h-screen"
+    class="container d-flex flex-column flex-md-row align-items-center justify-content-center justify-content-md-between min-vh-100 py-5"
     id="/"
   >
-    <div class="sm:text-center lg:text-left">
-      <h1
-        class="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl"
-      >
-        <span class="block text-black">Bienvenidos</span>
-        <span class="block text-blue-500 z-0 lg:inline">
-          <p>Gestión Integral de Pagos para Centros de Padres y Apoderados</p>
+    <div class="text-center text-lg-start">
+      <h1 class="display-4 fw-bold">
+        <span class="d-block text-black welcome-text">Bienvenidos</span>
+        <span class="d-block text-primary">
+          <p class="subtitle-text">
+            Gestión Integral de Pagos para Centros de Padres y Apoderados
+          </p>
         </span>
       </h1>
-      <p
-        class="mt-3 text-base text-black sm:mt-5 sm:text-lg sm:max-w-xl sm:mx-auto md:mt-5 md:text-xl lg:mx-0"
-      >
+      <p class="mt-3 lead text-dark">
         Sistema de gestión para que tu Centro de Padres y Apoderados administre
         pagos de manera eficiente y transparente.
       </p>
-      <div class="mt-5 sm:mt-8 sm:flex sm:justify-center lg:justify-start">
-        <div class="mt-3 sm:mt-0 cursor-pointer w-1/2">
-          <a
-            href="/gestion/"
-            class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-blue-500 hover:bg-blue-200 md:py-4 md:text-lg md:px-10"
-            >Gestión</a
-          >
-        </div>
-        <div class="mt-3 sm:mt-0 sm:ml-3 cursor-pointer w-1/2">
-          <a
-            href="/perfiles/"
-            class="w-full flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-green-500 hover:bg-green-200 md:py-4 md:text-lg md:px-10"
-            >Perfiles</a
-          >
-        </div>
-      </div>
     </div>
     <img
       src="{% static 'img/webdev.svg' %}"
       alt=""
-      class="md:w-3/6 hidden sm:block"
-      style="opacity: 1; transform: none"
+      class="img-fluid w-md-50 d-none d-sm-block"
     />
   </main>
 </div>
 
-<!-- Rest of the content remains the same -->
-<div id="about" class="bg-white">
-  <div class="max-w-7xl mx-auto x-4 sm:px-6 lg:px-8 px-4 md:mt-0 pt-24 pb-12">
-    <h2 class="text-5xl font-bold px-4 md:px-0 text-center">
-      ¿PORQUÉ SchoolPay?
-    </h2>
-    <div>
-      <div>
-        <h4 class="mt-12 text-3xl font-semibold text-blue-500">
-          La Gestión de Pagos
-        </h4>
-        <p class="mt-4 text-xl text-justify text-gray-500">
+<div id="about" class="bg-white py-5">
+  <div class="container">
+    <h2 class="text-center mb-5 display-4 fw-bold">¿PORQUÉ SchoolPay?</h2>
+    <div class="row">
+      <div class="col-12">
+        <h4 class="mt-4 text-primary">La Gestión de Pagos</h4>
+        <p class="lead text-justify text-secondary">
           La gestión de los pagos de los Centros de Padres y Apoderados no es un
           problema con nosotros. SchoolPay te ayuda a definir distintos
           conceptos de pagos para los apoderados de curso, registrando y
@@ -73,11 +49,9 @@ Padres{% endblock %} {% block content %}
           en la administración de recursos.
         </p>
       </div>
-      <div>
-        <h4 class="mt-12 text-3xl font-semibold text-blue-500">
-          Nuestras Tecnologías y Herramientas
-        </h4>
-        <p class="mt-4 text-xl text-justify text-gray-500">
+      <div class="col-12">
+        <h4 class="mt-4 text-primary">Nuestras Tecnologías y Herramientas</h4>
+        <p class="lead text-justify text-secondary">
           Usando una combinación de tecnologías de vanguardia y software
           confiable, te ayudamos a registrar y compartir reportes y estados de
           pagos y avances con foco en la transparencia y eficiencia hacia
@@ -85,236 +59,9 @@ Padres{% endblock %} {% block content %}
           multiplataforma con alto rendimiento, especialmente diseñada para
           smartphones, tablets y equipos de escritorio.
         </p>
-
-        <div
-          class="mt-12 gallery js-flickity"
-          data-flickity-options='{ "wrapAround": true }'
-        >
-          <div class="gallery-cell">
-            <img
-              src="{% static 'img/javascript-original.svg' %}"
-              alt="JavaScript"
-            />
-          </div>
-          <div class="gallery-cell">
-            <img src="{% static 'img/html5-original.svg' %}" alt="HTML5" />
-          </div>
-          <div class="gallery-cell">
-            <img src="{% static 'img/css3-plain.svg' %}" alt="CSS3" />
-          </div>
-          <div class="gallery-cell">
-            <img src="{% static 'img/bootstrap-plain.svg' %}" alt="Bootstrap" />
-          </div>
-          <div class="gallery-cell">
-            <img
-              src="{% static 'img/typescript-original.svg' %}"
-              alt="TypeScript"
-            />
-          </div>
-          <div class="gallery-cell">
-            <img
-              src="{% static 'img/react-original-wordmark.svg' %}"
-              alt="React"
-            />
-          </div>
-          <div class="gallery-cell">
-            <img src="{% static 'img/flutter-plain.svg' %}" alt="Flutter" />
-          </div>
-        </div>
       </div>
     </div>
   </div>
 </div>
 
-<div
-  class="pb-20 bg-fixed bg-gray-100"
-  style="
-    background-image: url('{% static 'img/techBg.png' %}');
-    background-size: cover;
-  "
->
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 px-4 pt-20" id="services">
-    <h2 class="text-5xl font-bold px-4 md:px-0 text-center">
-      Nuestros Servicios
-    </h2>
-    <div class="">
-      <h4 class="mt-16 text-3xl font-semibold text-blue-500">
-        ¿Qué proveemos?
-      </h4>
-      <div
-        class="mt-8 flex md:flex-row justify-between flex-col md:items-stretch items-center"
-      >
-        <div
-          class="md:w-96 p-4 bg-white rounded-lg flex items-center flex-col mt-8"
-          style="opacity: 1; transform: none"
-        >
-          <img
-            src="https://img.icons8.com/external-kiranshastry-lineal-color-kiranshastry/64/000000/external-web-development-coding-kiranshastry-lineal-color-kiranshastry.png"
-            alt=""
-          />
-          <h4 class="text-xl font-bold mt-4">Aplicación Web</h4>
-          <p class="text-lg mt-2 text-justify">
-            Diseñamos una aplicación Web que permite a las directivas informar a
-            los apoderados sobre el estado de sus pagos en su equipo móvil, con
-            notificaciones en corre electrónico, reportes en tiempo real y
-            acceso a reportes detallados, para que nunca más debas preocuparte a
-            última hora de la gestión de pagos.
-          </p>
-        </div>
-        <div
-          class="md:w-96 p-4 bg-white rounded-lg flex items-center flex-col mt-8"
-          style="opacity: 1; transform: none"
-        >
-          <img
-            src="https://img.icons8.com/external-justicon-lineal-color-justicon/64/000000/external-app-development-responsive-web-design-justicon-lineal-color-justicon.png"
-            alt=""
-          />
-          <h4 class="text-xl font-bold mt-4">Aplicaciones Móvil</h4>
-          <p class="text-lg mt-2 text-justify">
-            Nuestra aplicación móvil te permitirá saber el estado en tiempo real
-            de los pagos de los apoderados, obtener reportes y gestionar
-            usuarios.
-          </p>
-        </div>
-        <div
-          class="md:w-96 p-4 bg-white rounded-lg flex items-center flex-col mt-8"
-          style="opacity: 1; transform: none"
-        >
-          <img
-            src="https://img.icons8.com/external-flaticons-flat-flat-icons/64/000000/external-backend-no-code-flaticons-flat-flat-icons.png"
-            alt=""
-          />
-          <h4 class="text-xl font-bold mt-4">
-            Reportes e Informes Automatizados
-          </h4>
-          <p class="text-lg mt-2 text-justify">
-            De aceurdo a la necesidad de tu comunidad educativa, podemos generar
-            distintos tipos de reportes relevantes , de forma de mantener a
-            todos los involucrados con información que permite la toma de
-            decisiones informadas desde los distintos roles.
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div id="contact" class="bg-gray-100 pt-24 md:h-screen">
-  <div class="max-w-7xl mx-auto x-4 sm:px-6 lg:px-8 px-4">
-    <h2 class="text-5xl font-bold px-4 md:px-0 text-center z-0">
-      Contactanos!
-    </h2>
-    <div>
-      <h4 class="mt-12 text-3xl font-semibold text-blue-500">
-        Conéctate con nosotros
-      </h4>
-      <p class="text-gray-500 text-xl">
-        Si quieres saber más sobre als funcionalidades o deseas una demo,<br />
-        o deseas contactarnos para más detalles o resolver alguna duda,<br />
-        por favor, contactanos!
-      </p>
-    </div>
-    <div
-      class="flex justify-between items-center md:items-stretch flex-col md:flex-row pb-24"
-    >
-      <div class="w-full md:pr-8">
-        <form method="post" action="{% url 'contact' %}">
-          {% csrf_token %}
-          <div class="my-6">
-            <label
-              for="name"
-              class="block mb-2 text-lg font-medium text-gray-900"
-              >Nombre</label
-            >
-            <input
-              type="text"
-              id="name"
-              name="name"
-              class="bg-gray-50er-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Ingresa tu nombre"
-              required
-            />
-          </div>
-          <div class="mb-4">
-            <label
-              for="email"
-              class="block mb-2 text-lg font-medium text-gray-900"
-              >Email</label
-            >
-            <input
-              type="email"
-              id="email"
-              name="email"
-              class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-              placeholder="Ingresa tu email"
-              required
-            />
-          </div>
-          <div class="mb-4">
-            <label
-              for="message"
-              class="block mb-2 text-lg font-medium text-gray-900"
-              >Mensaje</label
-            >
-            <textarea
-              id="message"
-              name="message"
-              class="bg-gray-50 border border-gray-300 text-gray-900 h-28 w-full text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block p-2.5"
-              placeholder="Ingresa tu mensaje"
-              required
-            ></textarea>
-          </div>
-          <div class="flex justify-between">
-            <div class="underline">
-              <a href="mailto:contacto@elabs.cl"
-                >Contacta al equipo de desarrollo</a
-              >
-            </div>
-            <button
-              type="submit"
-              class="bg-indigo-500 text-white px-4 py-2 w-40 rounded-md hover:bg-indigo-400"
-            >
-              Enviar
-            </button>
-          </div>
-        </form>
-      </div>
-      <div class="w-full flex flex-col md:items-end mt-12 md:mt-6">
-        <h1 class="text-3xl font-bold">Email</h1>
-        <a
-          href="mailto:contacto@centropadres.cl"
-          class="mb-12 mt-4 font-semibold text-blue-700 block uppercase"
-          >hablemos@SchoolPay.cl</a
-        >
-        <h1 class="text-3xl font-bold">Address</h1>
-        <a
-          href="hello"
-          class="mt-4 mb-12 md:text-right font-semibold text-blue-700 block uppercase"
-          >Republica Independiente <br />de Arica y Parinacota, Chile</a
-        >
-        <h1 class="text-3xl font-bold">Social</h1>
-        <ul class="flex">
-          <a
-            href="https://github.com/JorgeCardenasY/"
-            class="md:ml-6 md:mr-0 mr-6 cursor-pointer mt-4 hover:scale-125 flex flex-col justify-center items-center"
-          >
-            <img
-              alt="GitHub"
-              src="https://img.icons8.com/doodle/40/000000/github--v1.png"
-            />
-          </a>
-          <a
-            href="https://www.linkedin.com/in/jorgecardenasy/"
-            class="md:ml-6 md:mr-0 mr-6 cursor-pointer mt-4 hover:scale-125 flex flex-col justify-center items-center"
-          >
-            <img
-              alt="LinkedIn"
-              src="https://img.icons8.com/doodle/40/000000/linkedin--v2.png"
-            />
-          </a>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
 {% endblock %}
