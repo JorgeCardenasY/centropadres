@@ -18,11 +18,13 @@ from django.contrib import admin
 from django.urls import path, include
 from . import views
 from perfiles.views import mi_curso
+from .admin import my_admin_site
 
 urlpatterns = [
     path('', views.home, name='home'),
     path('contact/', views.contact, name='contact'),
-    path('admin/', admin.site.urls),
+    path('admin/', my_admin_site.urls),
+    path('accounts/', include('django.contrib.auth.urls')),
     path('mi_curso/', mi_curso, name='mi-curso'),
     path('perfiles/', include('perfiles.urls')),
     path('gestion/', include('gestion.urls')),
