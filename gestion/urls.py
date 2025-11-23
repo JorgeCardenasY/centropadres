@@ -1,5 +1,6 @@
 from django.urls import path
+from . import views
 
-# This file is intentionally left with an empty urlpatterns list.
-# The old URL patterns were based on obsolete views.
-urlpatterns = []
+urlpatterns = [
+    path('ajax/get-alumnos-for-apoderado/', views.get_alumnos_for_apoderado, name='ajax_get_alumnos_for_apoderado'),
+]

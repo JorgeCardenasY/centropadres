@@ -1,0 +1,46 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{{ title }}</h1>
+    <div class="module">
+        <h2>Gestionar Permisos de Usuario</h2>
+        <p>Haga clic en un usuario para editar sus permisos, estado de staff y estado de superusuario.</p>
+        <table>
+            <thead>
+                <tr>
+                    <th>Usuario</th>
+                    <th>Staff Status</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for u in users %}
+                <tr>
+                    <td>{{ u.username }}</td>
+                    <td>
+                        {% if u.is_staff %}
+                            <img src="{% static 'admin/img/icon-yes.svg' %}" alt="True">
+                        {% else %}
+                            <img src="{% static 'admin/img/icon-no.svg' %}" alt="False">
+                        {% endif %}
+                    </td>
+                    <td><a href="{% url 'myadmin:auth_user_change' u.id %}" class="button">Editar Permisos</a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div class="module">
+        <h2>Accesos Rápidos</h2>
+        <ul>
+            <li><a href="{% url 'myadmin:auth_user_changelist' %}">Ver todos los usuarios</a></li>
+            <li><a href="{% url 'myadmin:auth_group_changelist' %}">Gestionar Grupos de Permisos</a></li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

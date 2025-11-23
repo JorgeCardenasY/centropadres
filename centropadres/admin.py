@@ -1,4 +1,8 @@
 from django.contrib.admin import AdminSite
+from django.urls import path
+from django.shortcuts import render
+from django.contrib.auth.models import User, Group
+from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .forms import MyCustomAuthenticationForm
 
 class MyAdminSite(AdminSite):
@@ -6,4 +10,27 @@ class MyAdminSite(AdminSite):
     login_template = 'admin/login.html'
     site_header = "SchoolPay Admin"
 
+    def get_urls(self):
+        urls = super().get_urls()
+        my_urls = [
+            path('permissions-dashboard/', self.admin_view(self.permissions_dashboard), name='permissions_dashboard'),
+        ]
+        return my_urls + urls
+
+    def permissions_dashboard(self, request):
+        # Only superusers can access this page
+        if not request.user.is_superuser:
+            return render(request, 'admin/denied.html', {'message': 'No tiene permisos para acceder a esta página.'})
+
+        users = User.objects.filter(is_superuser=False)
+        context = {
+            'title': 'Panel de Permisos',
+            'users': users,
+            **self.each_context(request),
+        }
+        return render(request, 'admin/permissions_dashboard.html', context)
+
 my_admin_site = MyAdminSite(name='myadmin')
+
+my_admin_site.register(User, UserAdmin)
+my_admin_site.register(Group, GroupAdmin)

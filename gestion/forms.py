@@ -1,2 +1,7 @@
-# This file is intentionally left blank as the old forms were obsolete.
-# New forms should be created based on the new model structure.
+from django import forms
+from .models import RegistroPago
+
+class RegistroPagoForm(forms.ModelForm):
+    class Meta:
+        model = RegistroPago
+        fields = '__all__'

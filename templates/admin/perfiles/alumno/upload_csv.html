@@ -5,17 +5,22 @@
 {% block content %}
 <div id="content-main">
     <h1>Cargar Alumnos desde CSV</h1>
-    <p>
+    <H2>
         Seleccione un archivo CSV para cargar los datos de los alumnos y sus apoderados asociados.
-    </p>
-    <div class="alert alert-info" role="alert" style="margin-top: 15px;">
+    </H2>
+    <div class="alert alert-info" role="alert" style="margin-top: 15px; margin-bottom: 15px;">
         Puede descargar un archivo de ejemplo con el formato correcto aquí:
         <a href="{% static 'ejemplo_alumnos.csv' %}" download>ejemplo_alumnos.csv</a>
     </div>
-    <p>
-        El formato del encabezado del archivo CSV debe ser:
-        <code>apoderado_nombres,apoderado_apellidos,apoderado_rut_dni,apoderado_telefono,apoderado_direccion,apoderado_whatsapp,alumno_nombres,alumno_apellidos,alumno_rut_dni,alumno_curso,alumno_colegio</code>
+    <p style="font-weight: bold;">
+        El formato del encabezado del archivo CSV debe ser:<br>
+        <code>apoderado_nombres | apoderado_apellidos | apoderado_rut_dni | apoderado_telefono | apoderado_direccion | apoderado_whatsapp | alumno_nombres | alumno_apellidos | alumno_rut_dni | alumno_curso | alumno_colegio</code>
     </p>
+
+        <H2 style="text-align: center;">
+        La planilla debe llenarse completa. En caso de errores, las filas con error serán ignoradas.
+    </H2>
+
 
     <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
