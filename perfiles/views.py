@@ -3,6 +3,19 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .models import Apoderado, Alumno
 from gestion.models import Concepto, RegistroPago
+from django.http import JsonResponse
+from django.contrib.auth.models import User
+
+@login_required
+def get_user_info(request):
+    user_id = request.GET.get('user_id')
+    if user_id:
+        try:
+            user = User.objects.get(pk=user_id)
+            return JsonResponse({'first_name': user.first_name, 'last_name': user.last_name})
+        except User.DoesNotExist:
+            return JsonResponse({'first_name': '', 'last_name': ''})
+    return JsonResponse({'first_name': '', 'last_name': ''})
 
 @login_required
 def mi_perfil(request):

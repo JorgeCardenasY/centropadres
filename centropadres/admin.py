@@ -1,9 +1,10 @@
 from django.contrib.admin import AdminSite
 from django.urls import path
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User, Group
 from django.contrib.auth.admin import UserAdmin, GroupAdmin
 from .forms import MyCustomAuthenticationForm
+from django.http import HttpResponseRedirect
 
 class MyAdminSite(AdminSite):
     login_form = MyCustomAuthenticationForm
@@ -16,6 +17,16 @@ class MyAdminSite(AdminSite):
             path('permissions-dashboard/', self.admin_view(self.permissions_dashboard), name='permissions_dashboard'),
         ]
         return my_urls + urls
+
+    def login(self, request, extra_context=None):
+        # Call the parent AdminSite's login method
+        response = super().login(request, extra_context)
+
+        # If the user is authenticated and is not a staff member, redirect them
+        if request.user.is_authenticated and not request.user.is_staff:
+            return HttpResponseRedirect('/perfiles/mi-perfil/')
+        
+        return response
 
     def permissions_dashboard(self, request):
         # Only superusers can access this page

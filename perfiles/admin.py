@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.hashers import make_password
 from django.contrib.contenttypes.models import ContentType
 from .models import Apoderado, Alumno
-from gestion.models import Concepto, RegistroPago
+from gestion.models import Concepto, RegistroPago, Deuda
 from centropadres.admin import my_admin_site
 import csv
 from django.db import transaction
@@ -205,10 +205,19 @@ class AlumnoAdmin(admin.ModelAdmin):
         except Exception as e:
             raise Exception(f"Error al asignar permisos: {str(e)}")
 
+class DeudaInline(admin.TabularInline):
+    model = Deuda
+    extra = 1
+
 class ApoderadoAdmin(admin.ModelAdmin):
+    fields = ('user', 'nombres', 'apellidos', 'rut_dni', 'telefono', 'direccion', 'whatsapp', 'registrar_pago')
     list_display = ('nombres', 'apellidos', 'rut_dni', 'telefono', 'registrar_pago', 'tiene_cuenta_usuario')
     search_fields = ('nombres', 'apellidos', 'rut_dni')
     actions = ['crear_cuentas_usuario']
+    inlines = [DeudaInline]
+
+    class Media:
+        js = ('js/admin/fill_from_user.js',)
 
     def tiene_cuenta_usuario(self, obj):
         return "Sí" if obj.user else "No"

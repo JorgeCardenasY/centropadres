@@ -4,7 +4,7 @@ from django.contrib.auth.models import User
 class Persona(models.Model):
     nombres = models.CharField(max_length=100)
     apellidos = models.CharField(max_length=100)
-    rut_dni = models.CharField(max_length=20, unique=True)
+    rut_dni = models.CharField(max_length=20, unique=True, verbose_name='RUT-DNI')
 
     class Meta:
         abstract = True
