@@ -15,12 +15,8 @@ def mi_perfil(request):
     if not alumno:
         return render(request, 'error_page.html', {'message': 'No se encontró un alumno asociado a este apoderado.'})
 
-    conceptos_pagados_ids = RegistroPago.objects.filter(
-        apoderado=apoderado,
-        alumno=alumno
-    ).values_list('concepto__id', flat=True).distinct()
-
-    conceptos = Concepto.objects.filter(id__in=conceptos_pagados_ids)
+    # Obtener todos los conceptos (no solo los que tienen pagos)
+    conceptos = Concepto.objects.all()
 
     conceptos_data = []
     for concepto in conceptos:
@@ -31,6 +27,7 @@ def mi_perfil(request):
         ).aggregate(sum_monto=Sum('monto_pagado'))['sum_monto'] or 0
 
         monto_total_concepto = concepto.monto_total
+        monto_pendiente = max(monto_total_concepto - total_pagado, 0)
 
         porcentaje_pagado = 0
         estado_pago = "Pendiente"
@@ -46,9 +43,25 @@ def mi_perfil(request):
 
         conceptos_data.append({
             'nombre': concepto.nombre,
-            'get_estado_pago_display': estado_pago,
+            'numero_cuotas': concepto.numero_cuotas,
+            'monto_total': monto_total_concepto,
+            'monto_pagado': total_pagado,
+            'monto_pendiente': monto_pendiente,
+            'estado_pago': estado_pago,
             'es_pago_en_cuotas': concepto.numero_cuotas > 1,
             'porcentaje_pagado': porcentaje_pagado,
+        })
+
+    # Obtener apoderados con flag de reportador (tesoreros)
+    # Asumiendo que el campo se llama 'registrar_pago' o necesitamos crear uno nuevo
+    tesoreros = Apoderado.objects.filter(registrar_pago=True)
+    
+    # Preparar información de tesoreros para el mensaje
+    info_tesoreros = []
+    for tesorero in tesoreros:
+        info_tesoreros.append({
+            'nombre': f"{tesorero.nombres} {tesorero.apellidos}",
+            'telefono': tesorero.telefono
         })
 
     historial_data = []
@@ -75,22 +88,20 @@ def mi_perfil(request):
             'fecha': rp.fecha.strftime('%Y-%m-%d'),
             'descripcion': f'Registro de pago: {rp.monto_pagado} para {rp.concepto.nombre} por {rp.metodo_pago}.'
         })
-    
-    # This sorting is not ideal with empty dates. A better approach would be to have creation dates on all models.
-    # historial_data = sorted(historial_data, key=lambda x: x['fecha']) 
 
     context = {
         'perfil': {
             'alumno': {
                 'nombre': alumno.nombres,
                 'apellido': alumno.apellidos,
-                'curso': {'nombre': alumno.curso},
-                'colegio': {'nombre': alumno.colegio},
+                'curso': alumno.curso,
+                'colegio': alumno.colegio,
             },
             'fecha_creacion': apoderado.user.date_joined.strftime('%Y-%m-%d'),
             'fecha_asociacion_alumno': '', # Placeholder
             'conceptos': conceptos_data,
         },
         'historial': historial_data,
+        'tesoreros': info_tesoreros,
     }
     return render(request, 'perfiles/mi_perfil.html', context)

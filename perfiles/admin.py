@@ -243,3 +243,6 @@ class ApoderadoAdmin(admin.ModelAdmin):
             raise Exception(f"Error al obtener permisos: {str(e)}")
         except Exception as e:
             raise Exception(f"Error al asignar permisos: {str(e)}")
+
+my_admin_site.register(Alumno, AlumnoAdmin)
+my_admin_site.register(Apoderado, ApoderadoAdmin)
