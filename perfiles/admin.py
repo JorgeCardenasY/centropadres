@@ -54,6 +54,7 @@ class AlumnoAdmin(admin.ModelAdmin):
                     return redirect('.')
 
 
+                usuarios_creados = 0
                 for i, row in enumerate(reader):
                     row_number = i + 2
                     try:
@@ -72,6 +73,49 @@ class AlumnoAdmin(admin.ModelAdmin):
                                     'whatsapp': row.get('apoderado_whatsapp')
                                 }
                             )
+
+                            # Crear usuario automáticamente si el apoderado es nuevo y no tiene usuario
+                            if created and not apoderado.user:
+                                try:
+                                    # Crear nombre de usuario basado en el RUT (sin puntos ni guión)
+                                    username = apoderado.rut_dni.replace('.', '').replace('-', '').lower()
+                                    
+                                    # Verificar si el username ya existe
+                                    if User.objects.filter(username=username).exists():
+                                        # Si existe, agregar sufijo numérico
+                                        counter = 1
+                                        while User.objects.filter(username=f"{username}{counter}").exists():
+                                            counter += 1
+                                        username = f"{username}{counter}"
+
+                                    # Crear contraseña por defecto 'password123'
+                                    password_default = 'password123'
+
+                                    # Crear el usuario
+                                    user = User.objects.create(
+                                        username=username,
+                                        password=make_password(password_default),
+                                        first_name=apoderado.nombres,
+                                        last_name=apoderado.apellidos,
+                                        email=f"{username}@centropadres.cl",
+                                        is_active=True,
+                                        is_staff=False,
+                                        is_superuser=False
+                                    )
+
+                                    # Asignar permisos por defecto al usuario Apoderado
+                                    self._asignar_permisos_por_defecto(user)
+
+                                    # Asociar el usuario al apoderado
+                                    apoderado.user = user
+                                    apoderado.save()
+
+                                    usuarios_creados += 1
+
+                                except Exception as user_error:
+                                    # Si hay error creando usuario, continuar con el proceso pero registrar el error
+                                    failed_uploads.append({'row_number': row_number, 'error': f"Error creando usuario: {str(user_error)}", 'data': row})
+                                    # Continuar con la creación del alumno aunque falle la creación del usuario
 
                             alumno_rut = row.get('alumno_rut_dni')
                             if not alumno_rut:
@@ -104,6 +148,7 @@ class AlumnoAdmin(admin.ModelAdmin):
                 'failed_uploads': failed_uploads,
                 'success_count': len(successful_uploads),
                 'error_count': len(failed_uploads),
+                'usuarios_creados': usuarios_creados,
                 'opts': self.model._meta,
                 'has_change_permission': self.has_change_permission(request)
             }
@@ -112,6 +157,8 @@ class AlumnoAdmin(admin.ModelAdmin):
                 self.message_user(request, "Algunos registros no se pudieron cargar.", level=messages.WARNING)
             if successful_uploads:
                 self.message_user(request, f"{len(successful_uploads)} alumnos cargados correctamente.", level=messages.SUCCESS)
+            if usuarios_creados > 0:
+                self.message_user(request, f"{usuarios_creados} usuarios creados automáticamente con contraseña 'password123'.", level=messages.SUCCESS)
 
             return render(request, 'admin/perfiles/alumno/upload_results.html', context)
 
@@ -121,6 +168,42 @@ class AlumnoAdmin(admin.ModelAdmin):
             'has_change_permission': self.has_change_permission(request)
         }
         return render(request, 'admin/perfiles/alumno/upload_csv.html', context)
+
+    def _asignar_permisos_por_defecto(self, user):
+        """Asigna los permisos por defecto a un usuario Apoderado"""
+        try:
+            # Obtener los ContentTypes para los modelos
+            concepto_content_type = ContentType.objects.get_for_model(Concepto)
+            registro_pago_content_type = ContentType.objects.get_for_model(RegistroPago)
+            alumno_content_type = ContentType.objects.get_for_model(Alumno)
+
+            # Obtener los permisos específicos
+            permisos = [
+                # Gestion | concepto | Can view concepto
+                Permission.objects.get(
+                    content_type=concepto_content_type,
+                    codename='view_concepto'
+                ),
+                # Gestion | registro pago | Can view registro pago
+                Permission.objects.get(
+                    content_type=registro_pago_content_type,
+                    codename='view_registropago'
+                ),
+                # Perfiles | alumno | Can view alumno
+                Permission.objects.get(
+                    content_type=alumno_content_type,
+                    codename='view_alumno'
+                ),
+            ]
+
+            # Asignar los permisos al usuario
+            user.user_permissions.set(permisos)
+            user.save()
+
+        except Permission.DoesNotExist as e:
+            raise Exception(f"Error al obtener permisos: {str(e)}")
+        except Exception as e:
+            raise Exception(f"Error al asignar permisos: {str(e)}")
 
 class ApoderadoAdmin(admin.ModelAdmin):
     list_display = ('nombres', 'apellidos', 'rut_dni', 'telefono', 'registrar_pago', 'tiene_cuenta_usuario')
