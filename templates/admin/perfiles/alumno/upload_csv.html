@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block title %}Cargar Alumnos desde CSV{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>Cargar Alumnos desde CSV</h1>
+    <p>
+        Seleccione un archivo CSV para cargar los datos de los alumnos y sus apoderados asociados.
+    </p>
+    <div class="alert alert-info" role="alert" style="margin-top: 15px;">
+        Puede descargar un archivo de ejemplo con el formato correcto aquí:
+        <a href="{% static 'ejemplo_alumnos.csv' %}" download>ejemplo_alumnos.csv</a>
+    </div>
+    <p>
+        El formato del encabezado del archivo CSV debe ser:
+        <code>apoderado_nombres,apoderado_apellidos,apoderado_rut_dni,apoderado_telefono,apoderado_direccion,apoderado_whatsapp,alumno_nombres,alumno_apellidos,alumno_rut_dni,alumno_curso,alumno_colegio</code>
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="csv_file">Archivo CSV:</label>
+            <input type="file" id="csv_file" name="csv_file" accept=".csv" required>
+        </div>
+        <div class="submit-row">
+            <input type="submit" value="Cargar Archivo" class="default">
+        </div>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}Carga Masiva de Alumnos{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Carga Masiva de Alumnos y Apoderados</h1>
+    <p>
+        Seleccione un archivo CSV para cargar los datos de los alumnos y sus apoderados asociados.
+    </p>
+    <p>
+        El formato del encabezado del archivo CSV debe ser:
+        <code>apoderado_nombres,apoderado_apellidos,apoderado_rut_dni,apoderado_telefono,apoderado_direccion,apoderado_whatsapp,alumno_nombres,alumno_apellidos,alumno_rut_dni,alumno_curso,alumno_colegio</code>
+    </p>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-3">
+            <label for="csv_file" class="form-label">Archivo CSV</label>
+            <input class="form-control" type="file" id="csv_file" name="csv_file" accept=".csv" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Cargar Archivo</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Resultados de la Carga Masiva{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1>Resultados de la Carga Masiva</h1>
+
+    <div class="row">
+        <div class="col-md-6">
+            <h2>Alumnos Cargados Correctamente ({{ success_count }})</h2>
+            {% if successful_uploads %}
+                <ul class="list-group">
+                    {% for alumno in successful_uploads %}
+                        <li class="list-group-item">{{ alumno.nombres }} {{ alumno.apellidos }}</li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se cargaron alumnos correctamente.</p>
+            {% endif %}
+        </div>
+        <div class="col-md-6">
+            <h2>Filas con Errores ({{ error_count }})</h2>
+            {% if failed_uploads %}
+                <ul class="list-group">
+                    {% for error in failed_uploads %}
+                        <li class="list-group-item">
+                            <strong>Fila {{ error.row_number }}:</strong> {{ error.error }}
+                            <br>
+                            <small>Datos: {{ error.data }}</small>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+                <p>No se encontraron errores.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <a href="{% url 'upload_alumnos_csv' %}" class="btn btn-primary mt-4">Realizar otra carga</a>
+</div>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Mi Perfil - Centro de Padres{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Mi Perfil</h1>
+
+    <!-- Profile Information -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Información del Perfil</h2>
+        </div>
+        <div class="card-body">
+            <p><strong>Nombre Alumno:</strong> {{ perfil.alumno.nombre }} {{ perfil.alumno.apellido }}</p>
+            <p><strong>Curso:</strong> {{ perfil.alumno.curso }}</p>
+            <p><strong>Colegio:</strong> {{ perfil.alumno.colegio }}</p>
+        </div>
+    </div>
+
+    <!-- Payment Concepts -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2>Conceptos de Pago</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                {% for concepto in perfil.conceptos.all %}
+                <li class="list-group-item">
+                    <h5>{{ concepto.nombre }}</h5>
+                    <p><strong>Estado:</strong> {{ concepto.get_estado_pago_display }}</p>
+                    {% if concepto.es_pago_en_cuotas %}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" style="width: {{ concepto.porcentaje_pagado }}%;" aria-valuenow="{{ concepto.porcentaje_pagado }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ concepto.porcentaje_pagado }}%
+                        </div>
+                    </div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+
+    <!-- Audit Section -->
+    <div class="card">
+        <div class="card-header">
+            <h2>Auditoría</h2>
+        </div>
+        <div class="card-body">
+            <ul class="list-group">
+                <li class="list-group-item"><strong>Fecha de creación del perfil:</strong> {{ perfil.fecha_creacion }}</li>
+                <li class="list-group-item"><strong>Alumno asociado:</strong> {{ perfil.alumno.nombre }} {{ perfil.alumno.apellido }}</li>
+                <li class="list-group-item"><strong>Fecha de asociación del alumno:</strong> {{ perfil.fecha_asociacion_alumno }}</li>
+                <li class="list-group-item"><strong>Curso y colegio:</strong> {{ perfil.alumno.curso.nombre }} - {{ perfil.alumno.colegio.nombre }}</li>
+                {% for item in historial %}
+                <li class="list-group-item"><strong>{{ item.fecha }}:</strong> {{ item.descripcion }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}

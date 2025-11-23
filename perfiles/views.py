@@ -1,68 +1,96 @@
 from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import ListView, CreateView, UpdateView, DeleteView, TemplateView
-from .models import Perfil, Curso, Alumno
-from django.contrib.auth.models import User
-from .forms import UserCreationForm, PerfilForm
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
-
-class SuperuserRequiredMixin(UserPassesTestMixin):
-    def test_func(self):
-        return self.request.user.is_superuser
-
-class PerfilListView(LoginRequiredMixin, SuperuserRequiredMixin, ListView):
-    model = Perfil
-    template_name = 'perfiles/perfil_list.html'
-    context_object_name = 'perfiles'
-
-class PerfilCreateView(LoginRequiredMixin, SuperuserRequiredMixin, CreateView):
-    model = User
-    form_class = UserCreationForm
-    template_name = 'perfiles/perfil_form.html'
-    success_url = reverse_lazy('perfil-list')
-
-    def form_valid(self, form):
-        user = form.save()
-        # Manually create the profile because the form is complex
-        Perfil.objects.create(user=user, rol=self.request.POST.get('rol', 'apoderado'))
-        return super().form_valid(form)
-
-
-class PerfilUpdateView(LoginRequiredMixin, SuperuserRequiredMixin, UpdateView):
-    model = Perfil
-    form_class = PerfilForm
-    template_name = 'perfiles/perfil_form.html'
-    success_url = reverse_lazy('perfil-list')
-
-class PerfilDeleteView(LoginRequiredMixin, SuperuserRequiredMixin, DeleteView):
-    model = Perfil
-    template_name = 'perfiles/perfil_confirm_delete.html'
-    success_url = reverse_lazy('perfil-list')
-
-class PerfilesExplanationView(TemplateView):
-    template_name = 'perfiles/perfiles.html'
+from django.db.models import Sum
+from .models import Apoderado, Alumno
+from gestion.models import Concepto, RegistroPago
 
 @login_required
-def mi_curso(request):
-    perfil = get_object_or_404(Perfil, user=request.user)
-    alumno = perfil.alumno
-    curso = alumno.curso if alumno else None
+def mi_perfil(request):
+    try:
+        apoderado = request.user.apoderado
+    except Apoderado.DoesNotExist:
+        return render(request, 'error_page.html', {'message': 'No se encontró un apoderado asociado a este usuario.'})
 
-    if curso:
-        presidente = Perfil.objects.filter(alumno__curso=curso, rol='presidente').first()
-        tesorero = Perfil.objects.filter(alumno__curso=curso, rol='tesorero').first()
-        apoderados = Perfil.objects.filter(alumno__curso=curso).select_related('user', 'alumno')
-    else:
-        presidente = None
-        tesorero = None
-        apoderados = []
+    alumno = apoderado.alumnos.first()
+    if not alumno:
+        return render(request, 'error_page.html', {'message': 'No se encontró un alumno asociado a este apoderado.'})
+
+    conceptos_pagados_ids = RegistroPago.objects.filter(
+        apoderado=apoderado,
+        alumno=alumno
+    ).values_list('concepto__id', flat=True).distinct()
+
+    conceptos = Concepto.objects.filter(id__in=conceptos_pagados_ids)
+
+    conceptos_data = []
+    for concepto in conceptos:
+        total_pagado = RegistroPago.objects.filter(
+            apoderado=apoderado,
+            alumno=alumno,
+            concepto=concepto
+        ).aggregate(sum_monto=Sum('monto_pagado'))['sum_monto'] or 0
+
+        monto_total_concepto = concepto.monto_total
+
+        porcentaje_pagado = 0
+        estado_pago = "Pendiente"
+
+        if monto_total_concepto > 0:
+            porcentaje_pagado = min(int((total_pagado / monto_total_concepto) * 100), 100)
+            if porcentaje_pagado == 100:
+                estado_pago = "Pagado"
+            elif porcentaje_pagado > 0:
+                estado_pago = "Parcialmente Pagado"
+        else:
+            estado_pago = "N/A"
+
+        conceptos_data.append({
+            'nombre': concepto.nombre,
+            'get_estado_pago_display': estado_pago,
+            'es_pago_en_cuotas': concepto.numero_cuotas > 1,
+            'porcentaje_pagado': porcentaje_pagado,
+        })
+
+    historial_data = []
+    historial_data.append({
+        'fecha': apoderado.user.date_joined.strftime('%Y-%m-%d'),
+        'descripcion': f'Perfil de apoderado creado para {apoderado.nombres} {apoderado.apellidos}.'
+    })
+    historial_data.append({
+        'fecha': '', # Placeholder, replace with actual association date
+        'descripcion': f'Alumno {alumno.nombres} {alumno.apellidos} asociado al apoderado.'
+    })
+    historial_data.append({
+        'fecha': '', # Placeholder
+        'descripcion': f'Curso: {alumno.curso}, Colegio: {alumno.colegio}.'
+    })
+
+    registro_pagos = RegistroPago.objects.filter(
+        apoderado=apoderado,
+        alumno=alumno
+    ).order_by('fecha')
+
+    for rp in registro_pagos:
+        historial_data.append({
+            'fecha': rp.fecha.strftime('%Y-%m-%d'),
+            'descripcion': f'Registro de pago: {rp.monto_pagado} para {rp.concepto.nombre} por {rp.metodo_pago}.'
+        })
+    
+    # This sorting is not ideal with empty dates. A better approach would be to have creation dates on all models.
+    # historial_data = sorted(historial_data, key=lambda x: x['fecha']) 
 
     context = {
-        'curso': curso,
-        'presidente': presidente,
-        'tesorero': tesorero,
-        'apoderados': apoderados,
-        'alumno_actual': alumno,
+        'perfil': {
+            'alumno': {
+                'nombre': alumno.nombres,
+                'apellido': alumno.apellidos,
+                'curso': {'nombre': alumno.curso},
+                'colegio': {'nombre': alumno.colegio},
+            },
+            'fecha_creacion': apoderado.user.date_joined.strftime('%Y-%m-%d'),
+            'fecha_asociacion_alumno': '', # Placeholder
+            'conceptos': conceptos_data,
+        },
+        'historial': historial_data,
     }
-    return render(request, 'perfiles/mi_curso.html', context)
+    return render(request, 'perfiles/mi_perfil.html', context)
