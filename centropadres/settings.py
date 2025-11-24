@@ -69,7 +69,7 @@ WSGI_APPLICATION = 'centropadres.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'postgresql://postgresql:0EcMPH2NituLLleStmgly2vtYOaGA7KA@dpg-d4i32075r7bs73c6q1hg-a/centropadres'),
+        default=os.environ.get('DATABASE_URL', 'postgresql://postgresql:a4t5one3@dpg-d4i32075r7bs73c6q1hg-a/centropadres'),
         conn_max_age=600
     )
 }
@@ -99,13 +99,83 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es-cl'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'America/Santiago' # Changed from UTC to a specific timezone
 
 USE_I18N = True
 
 USE_TZ = True
 
 MONEY_FORMAT = 'CLP'
+
+# Email settings
+# https://docs.djangoproject.com/en/4.2/topics/email/
+# Use console email backend in DEBUG mode for development
+# For production, you'd typically use SMTP:
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = os.environ.get('EMAIL_HOST')
+# EMAIL_PORT = os.environ.get('EMAIL_PORT')
+# EMAIL_USE_TLS = os.environ.get('EMAIL_USE_TLS', 'False') == 'True'
+# EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+# EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+
+if DEBUG:
+    EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+else:
+    # Use a dummy backend if SMTP is not configured
+    EMAIL_BACKEND = os.environ.get('EMAIL_BACKEND', 'django.core.mail.backends.dummy.EmailBackend')
+
+
+# Logging configuration
+# https://docs.djangoproject.com/en/4.2/topics/logging/
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse',
+        },
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'formatters': {
+        'verbose': {
+            'format': '{levelname} {asctime} {module} {process:d} {thread:d} {message}',
+            'style': '{',
+        },
+        'simple': {
+            'format': '{levelname} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'console': {
+            'level': 'INFO',
+            'filters': ['require_debug_true'],
+            'class': 'logging.StreamHandler',
+            'formatter': 'simple',
+        },
+        'mail_admins': {
+            'level': 'ERROR',
+            'filters': ['require_debug_false'],
+            'class': 'django.utils.log.AdminEmailHandler',
+            'formatter': 'verbose',
+        }
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console', 'mail_admins'],
+            'level': 'INFO',
+            'propagate': True,
+        },
+    }
+}
+
+# Admin details for error emails
+ADMINS = [
+    ('Admin Name', 'admin@example.com'), # Replace with actual admin details
+]
+MANAGERS = ADMINS
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
