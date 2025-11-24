@@ -4,6 +4,7 @@ dj-database-url==
 whitenoise==
 gunicorn==
 Pillow==
+dj-database-url
 
 
 # Django==4.2.26
