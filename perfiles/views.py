@@ -2,7 +2,7 @@ from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from .models import Apoderado, Alumno
-from gestion.models import Concepto, RegistroPago
+from gestion.models import Concepto, RegistroPago, Deuda
 from django.http import JsonResponse
 from django.contrib.auth.models import User
 
@@ -28,18 +28,20 @@ def mi_perfil(request):
     if not alumno:
         return render(request, 'error_page.html', {'message': 'No se encontró un alumno asociado a este apoderado.'})
 
-    # Obtener todos los conceptos (no solo los que tienen pagos)
-    conceptos = Concepto.objects.all()
+    # Obtener todas las deudas del apoderado
+    deudas = Deuda.objects.filter(apoderado=apoderado, alumno=alumno)
 
-    conceptos_data = []
-    for concepto in conceptos:
+    deudas_data = []
+    total_a_pagar = 0
+    total_pagado_general = 0
+    total_pendiente = 0
+
+    for deuda in deudas:
         total_pagado = RegistroPago.objects.filter(
-            apoderado=apoderado,
-            alumno=alumno,
-            concepto=concepto
+            deuda=deuda
         ).aggregate(sum_monto=Sum('monto_pagado'))['sum_monto'] or 0
 
-        monto_total_concepto = concepto.monto_total
+        monto_total_concepto = deuda.concepto.monto_total
         monto_pendiente = max(monto_total_concepto - total_pagado, 0)
 
         porcentaje_pagado = 0
@@ -54,19 +56,21 @@ def mi_perfil(request):
         else:
             estado_pago = "N/A"
 
-        conceptos_data.append({
-            'nombre': concepto.nombre,
-            'numero_cuotas': concepto.numero_cuotas,
+        deudas_data.append({
+            'nombre': deuda.concepto.nombre,
+            'numero_cuotas': deuda.concepto.numero_cuotas,
             'monto_total': monto_total_concepto,
             'monto_pagado': total_pagado,
             'monto_pendiente': monto_pendiente,
             'estado_pago': estado_pago,
-            'es_pago_en_cuotas': concepto.numero_cuotas > 1,
+            'es_pago_en_cuotas': deuda.concepto.numero_cuotas > 1,
             'porcentaje_pagado': porcentaje_pagado,
         })
+        total_a_pagar += monto_total_concepto
+        total_pagado_general += total_pagado
+        total_pendiente += monto_pendiente
 
     # Obtener apoderados con flag de reportador (tesoreros)
-    # Asumiendo que el campo se llama 'registrar_pago' o necesitamos crear uno nuevo
     tesoreros = Apoderado.objects.filter(registrar_pago=True)
     
     # Preparar información de tesoreros para el mensaje
@@ -112,7 +116,10 @@ def mi_perfil(request):
             },
             'fecha_creacion': apoderado.user.date_joined.strftime('%Y-%m-%d'),
             'fecha_asociacion_alumno': '', # Placeholder
-            'conceptos': conceptos_data,
+            'deudas': deudas_data,
+            'total_a_pagar': total_a_pagar,
+            'total_pagado_general': total_pagado_general,
+            'total_pendiente': total_pendiente,
         },
         'historial': historial_data,
         'tesoreros': info_tesoreros,

@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>{{ title }}</h2>
+        <button class="btn btn-secondary" onclick="window.print()">Imprimir Reporte</button>
+    </div>
+
+    <form method="get" class="mb-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="concepto" class="form-label">Filtrar por Concepto:</label>
+                <select name="concepto" id="concepto" class="form-select" onchange="this.form.submit()">
+                    <option value="">Todos los Conceptos</option>
+                    {% for c in conceptos %}
+                        <option value="{{ c.pk }}" {% if c.pk|stringformat:"s" == selected_concepto_id %}selected{% endif %}>
+                            {{ c.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+    </form>
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Apoderado</th>
+                <th>Alumno</th>
+                <th>Concepto</th>
+                <th>Monto a Pagar</th>
+                <th>Pagado</th>
+                <th>Monto Adeudado</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in report_data %}
+            <tr>
+                <td>{{ item.apoderado }}</td>
+                <td>{{ item.alumno }}</td>
+                <td>{{ item.concepto }}</td>
+                <td>${{ item.monto_a_pagar|floatformat:0 }}</td>
+                <td>${{ item.pagado|floatformat:0 }}</td>
+                <td>${{ item.monto_adeudado|floatformat:0 }}</td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6">No hay deudas registradas para el concepto seleccionado.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

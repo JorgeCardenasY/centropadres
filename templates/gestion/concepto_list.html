@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block title %}Conceptos de Pago{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Conceptos de Pago</h2>
+    <a href="{% url 'gestion:concepto_create' %}" class="btn btn-primary mb-3">Crear Nuevo Concepto</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Nombre</th>
+                <th>Monto Total</th>
+                <th>Fecha Límite</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for concepto in conceptos %}
+            <tr>
+                <td>{{ concepto.nombre }}</td>
+                <td>${{ concepto.monto_total|floatformat:0 }}</td>
+                <td>{{ concepto.fecha_limite }}</td>
+                <td>
+                    <a href="{% url 'gestion:concepto_update' concepto.pk %}" class="btn btn-sm btn-info">Editar</a>
+                    <a href="{% url 'gestion:concepto_delete' concepto.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="4">No hay conceptos de pago registrados.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

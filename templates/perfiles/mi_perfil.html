@@ -25,21 +25,32 @@
             <h2>Pagos Asociados y Realizados</h2>
         </div>
         <div class="card-body">
-            <ul class="list-group">
-                {% for concepto in perfil.conceptos.all %}
+            <ul class="list-group mb-3">
+                {% for deuda in perfil.deudas %}
                 <li class="list-group-item">
-                    <h5>{{ concepto.nombre }}</h5>
-                    <p><strong>Estado:</strong> {{ concepto.get_estado_pago_display }}</p>
-                    {% if concepto.es_pago_en_cuotas %}
+                    <h5>{{ deuda.nombre }}</h5>
+                    <p><strong>Estado:</strong> {{ deuda.estado_pago }}</p>
+                    <p><strong>Monto Total a Cancelar:</strong> ${{ deuda.monto_total|floatformat:0 }}</p>
+                    <p><strong>Montos Pagados:</strong> ${{ deuda.monto_pagado|floatformat:0 }}</p>
+                    <p><strong>Monto Pendiente:</strong> ${{ deuda.monto_pendiente|floatformat:0 }}</p>
+                    {% if deuda.es_pago_en_cuotas %}
                     <div class="progress">
-                        <div class="progress-bar" role="progressbar" style="width: {{ concepto.porcentaje_pagado }}%;" aria-valuenow="{{ concepto.porcentaje_pagado }}" aria-valuemin="0" aria-valuemax="100">
-                            {{ concepto.porcentaje_pagado }}%
+                        <div class="progress-bar" role="progressbar" style="width: {{ deuda.porcentaje_pagado }}%;" aria-valuenow="{{ deuda.porcentaje_pagado }}" aria-valuemin="0" aria-valuemax="100">
+                            {{ deuda.porcentaje_pagado }}% Pagado
                         </div>
                     </div>
                     {% endif %}
                 </li>
                 {% endfor %}
             </ul>
+            <div class="card">
+                <div class="card-body bg-light">
+                    <h4>Resumen General de Pagos</h4>
+                    <p><strong>Total a Pagar por todos los conceptos:</strong> ${{ perfil.total_a_pagar|floatformat:0 }}</p>
+                    <p><strong>Total Pagado:</strong> ${{ perfil.total_pagado_general|floatformat:0 }}</p>
+                    <p><strong>Monto Pendiente de Pagos:</strong> ${{ perfil.total_pendiente|floatformat:0 }}</p>
+                </div>
+            </div>
         </div>
     </div>
 

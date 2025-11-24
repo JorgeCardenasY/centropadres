@@ -36,7 +36,16 @@
 
         {% if user.apoderado.registrar_pago %}
         <li class="nav-item">
-          <a class="nav-link" href="/admin">Administración</a>
+          <a class="nav-link" href="{% url 'gestion:gestion_conceptos' %}">Gestionar Conceptos</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'gestion:assign_concept' %}">Asignar Conceptos</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'gestion:reporte_curso' %}">Reporte</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" href="{% url 'gestion:registrar_pago' %}">Registrar Pago</a>
         </li>
         {% endif %}
 
