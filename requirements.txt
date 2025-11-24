@@ -1,9 +1,9 @@
-Django==
-psycopg2-binary==
-dj-database-url==
-whitenoise==
-gunicorn==
-Pillow==
+Django
+psycopg2-binary
+dj-database-url
+whitenoise
+gunicorn
+Pillow
 
 
 
