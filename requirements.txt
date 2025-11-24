@@ -1,6 +1,14 @@
-Django==4.2.26
-psycopg2-binary==2.9.9
-dj-database-url==1.0.0
-whitenoise==6.6.0
-gunicorn==22.0.0
-Pillow==10.1.0
+Django==
+psycopg2-binary==
+dj-database-url==
+whitenoise==
+gunicorn==
+Pillow==
+
+
+# Django==4.2.26
+# psycopg2-binary==2.9.9
+# dj-database-url==1.0.0
+# whitenoise==6.6.0
+# gunicorn==22.0.0
+# Pillow==10.1.0
