@@ -69,7 +69,7 @@ WSGI_APPLICATION = 'centropadres.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.environ.get('DATABASE_URL', 'postgresql://postgres:a4t5one3@localhost:5432/centropadres'),
+        default=os.environ.get('DATABASE_URL', 'postgresql://postgresql:0EcMPH2NituLLleStmgly2vtYOaGA7KA@dpg-d4i32075r7bs73c6q1hg-a/centropadres'),
         conn_max_age=600
     )
 }
