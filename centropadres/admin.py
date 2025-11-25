@@ -57,7 +57,7 @@ class MyAdminSite(AdminSite):
                     Session.objects.get(session_key=session_key).delete()
                 except Session.DoesNotExist:
                     pass # Session already expired or deleted
-            self.message_user(request, f"{len(session_keys_to_delete)} sesiones seleccionadas han sido cerradas.", level='success')
+            messages.success(request, f"{len(session_keys_to_delete)} sesiones seleccionadas han sido cerradas.")
             return redirect('myadmin:manage_apoderado_sessions')
 
         active_sessions_data = []
