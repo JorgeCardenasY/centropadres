@@ -13,4 +13,7 @@
     </form>
 </div>
 {{ form.media }}
+{% block extra_js %}
+<script src="{% static 'js/admin/filter_alumnos.js' %}"></script>
+{% endblock %}
 {% endblock %}
