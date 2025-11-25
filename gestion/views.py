@@ -104,25 +104,39 @@ def assign_concept_to_apoderado(request):
     if request.method == 'POST':
         form = AssignConceptForm(request.POST)
         if form.is_valid():
-            apoderado = form.cleaned_data['apoderado']
+            apoderado = form.cleaned_data.get('apoderado')
             concepto = form.cleaned_data['concepto']
+            assign_all = form.cleaned_data.get('assign_to_all_apoderados')
 
-            # Create Deuda instances for all Alumnos associated with the selected Apoderado
-            alumnos = apoderado.alumnos.all()
-            if not alumnos:
-                messages.warning(request, f"El apoderado {apoderado.nombres} {apoderado.apellidos} no tiene alumnos asociados. No se asignó ninguna deuda.")
-                return redirect('gestion:assign_concept')
+            if assign_all:
+                target_apoderados = Apoderado.objects.filter(alumnos__isnull=False).distinct()
+                message_prefix = "Concepto asignado a todos los apoderados con alumnos:"
+            else:
+                if not apoderado:
+                    messages.error(request, "Debe seleccionar un apoderado si no marca la opción de asignar a todos.")
+                    return render(request, 'gestion/assign_concept.html', {'form': form, 'title': 'Asignar Concepto de Pago a Apoderado'})
+                target_apoderados = [apoderado]
+                message_prefix = f"Concepto '{concepto.nombre}' asignado a {apoderado.nombres} {apoderado.apellidos}:"
 
-            deudas_creadas = 0
-            for alumno in alumnos:
-                Deuda.objects.get_or_create(
-                    apoderado=apoderado,
-                    alumno=alumno,
-                    concepto=concepto
-                )
-                deudas_creadas += 1
+            total_deudas_creadas = 0
+            for apoderado_obj in target_apoderados:
+                alumnos = apoderado_obj.alumnos.all()
+                if not alumnos:
+                    messages.warning(request, f"El apoderado {apoderado_obj.nombres} {apoderado_obj.apellidos} no tiene alumnos asociados. No se asignó ninguna deuda.")
+                    continue
+
+                for alumno in alumnos:
+                    Deuda.objects.get_or_create(
+                        apoderado=apoderado_obj,
+                        alumno=alumno,
+                        concepto=concepto
+                    )
+                    total_deudas_creadas += 1
             
-            messages.success(request, f"Concepto '{concepto.nombre}' asignado a {deudas_creadas} alumno(s) de {apoderado.nombres} {apoderado.apellidos}.")
+            if total_deudas_creadas > 0:
+                messages.success(request, f"{message_prefix} {total_deudas_creadas} deuda(s) creadas.")
+            else:
+                messages.warning(request, "No se creó ninguna deuda.")
             return redirect('gestion:assign_concept')
     else:
         form = AssignConceptForm()

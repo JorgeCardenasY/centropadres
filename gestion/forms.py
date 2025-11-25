@@ -27,7 +27,19 @@ class ConceptoForm(forms.ModelForm):
         }
 
 class AssignConceptForm(forms.Form):
-    apoderado = forms.ModelChoiceField(queryset=Apoderado.objects.all(), label="Apoderado")
+    apoderado = forms.ModelChoiceField(queryset=Apoderado.objects.all(), label="Apoderado", required=False)
     concepto = forms.ModelChoiceField(queryset=Concepto.objects.all(), label="Concepto de Pago")
+    assign_to_all_apoderados = forms.BooleanField(label="Asignar a todos los apoderados con alumnos", required=False)
+
+    def clean(self):
+        cleaned_data = super().clean()
+        apoderado = cleaned_data.get('apoderado')
+        assign_all = cleaned_data.get('assign_to_all_apoderados')
+
+        if not apoderado and not assign_all:
+            raise forms.ValidationError("Debe seleccionar un apoderado o marcar la opción de asignar a todos.")
+        if apoderado and assign_all:
+            raise forms.ValidationError("No puede seleccionar un apoderado y marcar la opción de asignar a todos al mismo tiempo.")
+        return cleaned_data
 
 

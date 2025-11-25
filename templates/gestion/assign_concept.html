@@ -12,4 +12,25 @@
         <a href="{% url 'gestion:gestion_conceptos' %}" class="btn btn-secondary">Cancelar</a>
     </form>
 </div>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    var assignAllCheckbox = document.getElementById('id_assign_to_all_apoderados');
+    var apoderadoSelect = document.getElementById('id_apoderado');
+
+    function toggleApoderadoField() {
+        if (assignAllCheckbox.checked) {
+            apoderadoSelect.value = ''; // Clear selection when "assign to all" is checked
+            apoderadoSelect.setAttribute('disabled', 'disabled');
+        } else {
+            apoderadoSelect.removeAttribute('disabled');
+        }
+    }
+
+    if (assignAllCheckbox && apoderadoSelect) {
+        assignAllCheckbox.addEventListener('change', toggleApoderadoField);
+        // Set initial state
+        toggleApoderadoField();
+    }
+});
+</script>
 {% endblock %}
