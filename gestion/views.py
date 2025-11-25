@@ -148,7 +148,34 @@ def assign_concept_to_apoderado(request):
     return render(request, 'gestion/assign_concept.html', context)
 
 
-@method_decorator(login_required, name='dispatch')
+@method_decorator(registrador_required, name='dispatch') # Using custom decorator
+class RegistroPagoListView(ListView):
+    model = RegistroPago
+    template_name = 'gestion/registropago_list.html'
+    context_object_name = 'pagos'
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = super().get_queryset().select_related('apoderado', 'alumno', 'concepto', 'registrador')
+        apoderado_id = self.request.GET.get('apoderado')
+        if apoderado_id:
+            queryset = queryset.filter(apoderado_id=apoderado_id)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['apoderados'] = Apoderado.objects.all() # For filter dropdown
+        context['selected_apoderado_id'] = self.request.GET.get('apoderado')
+        context['title'] = 'Listado y Eliminación de Pagos'
+        return context
+
+@method_decorator(registrador_required, name='dispatch') # Using custom decorator
+class RegistroPagoDeleteView(DeleteView):
+    model = RegistroPago
+    template_name = 'gestion/registropago_confirm_delete.html'
+    success_url = reverse_lazy('gestion:manage_pagos') # Will be defined in urls.py
+
+@method_decorator(registrador_required, name='dispatch') # Changed decorator
 class ConceptoListView(ListView):
     model = Concepto
     template_name = 'gestion/concepto_list.html'

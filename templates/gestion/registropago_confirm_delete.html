@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}Confirmar Eliminación de Pago{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>Confirmar Eliminación de Pago</h2>
+    <p>¿Estás seguro de que quieres eliminar el pago de <strong>${{ object.monto_pagado|floatformat:0 }}</strong> hecho por <strong>{{ object.apoderado }}</strong> para el concepto <strong>{{ object.concepto }}</strong>?</p>
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'gestion:manage_pagos' %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

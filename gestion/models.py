@@ -37,6 +37,7 @@ class RegistroPago(models.Model):
     concepto = models.ForeignKey(Concepto, on_delete=models.CASCADE, related_name='pagos')
     monto_pagado = models.DecimalField(max_digits=10, decimal_places=2)
     metodo_pago = models.CharField(max_length=20, choices=METODO_PAGO_CHOICES)
+    descripcion_detalle = models.CharField(max_length=100, blank=True, null=True, verbose_name='Descripción/Detalle') # New field
     fecha = models.DateField(default=timezone.now) # Changed from auto_now_add=True
     registrador = models.ForeignKey(
         Apoderado, 
