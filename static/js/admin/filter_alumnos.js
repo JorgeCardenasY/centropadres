@@ -26,7 +26,10 @@ document.addEventListener("DOMContentLoaded", function() {
                                 }));
                             });
                             // Restore selected value if it's still in the list
-                            if (selectedAlumno) {
+                            if (data.alumnos.length === 1) {
+                                // Automatically select the only student
+                                alumnoSelect.val(data.alumnos[0].alumno_id);
+                            } else if (selectedAlumno) {
                                 alumnoSelect.val(selectedAlumno);
                             }
                         }
