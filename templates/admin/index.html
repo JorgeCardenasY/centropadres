@@ -59,5 +59,21 @@
             </tbody>
         </table>
     </div>
+
+    <!-- Custom App for Session Management -->
+    <div class="app-custom module">
+        <table>
+            <caption>
+                <a href="{% url 'myadmin:manage_apoderado_sessions' %}" class="section">Gestionar Sesiones de Apoderados</a>
+            </caption>
+            <tbody>
+                <tr class="model-sessions">
+                    <th scope="row"><a href="{% url 'myadmin:manage_apoderado_sessions' %}">Ver Sesiones Activas</a></th>
+                    <td>&nbsp;</td>
+                    <td><a href="{% url 'myadmin:manage_apoderado_sessions' %}" class="viewlink">Ver</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 {% endblock %}

@@ -1,0 +1,58 @@
+{% extends "admin/base_site.html" %}
+{% load i18n admin_urls %}
+
+{% block breadcrumbs %}
+<div class="breadcrumbs">
+    <a href="{% url 'admin:index' %}">{% trans 'Home' %}</a>
+    &rsaquo; <a href="{% url 'myadmin:manage_apoderado_sessions' %}">{{ title }}</a>
+</div>
+{% endblock %}
+
+{% block content %}
+<div id="content-main">
+    <h1>{{ title }}</h1>
+
+    {% if active_sessions %}
+        <p>Seleccione las sesiones que desea cerrar:</p>
+        <form action="" method="post">
+            {% csrf_token %}
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th><input type="checkbox" id="select_all_sessions"></th>
+                        <th>Apoderado</th>
+                        <th>Nombre de Usuario</th>
+                        <th>Clave de Sesión</th>
+                        <th>Expira el</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for session in active_sessions %}
+                        <tr>
+                            <td><input type="checkbox" name="session_keys" value="{{ session.session_key }}"></td>
+                            <td>{{ session.apoderado_name }}</td>
+                            <td>{{ session.username }}</td>
+                            <td>{{ session.session_key }}</td>
+                            <td>{{ session.last_activity }}</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <button type="submit" class="btn btn-danger">Cerrar Sesiones Seleccionadas</button>
+        </form>
+    {% else %}
+        <p>No hay sesiones de apoderados activas en este momento.</p>
+    {% endif %}
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    document.getElementById('select_all_sessions').addEventListener('change', function() {
+        var checkboxes = document.querySelectorAll('input[name="session_keys"]');
+        for (var i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].checked = this.checked;
+        }
+    });
+});
+</script>
+{% endblock %}
