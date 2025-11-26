@@ -11,7 +11,7 @@ from django.utils import timezone # Import timezone
 
 class MyAdminSite(AdminSite):
     login_form = MyCustomAuthenticationForm
-    login_template = 'admin/login.html'
+    login_template = 'admin/custom_login.html'
     site_header = "SchoolPay Admin"
 
     def get_urls(self):
