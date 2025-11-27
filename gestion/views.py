@@ -169,6 +169,18 @@ class RegistroPagoListView(ListView):
         context['title'] = 'Listado y Eliminación de Pagos'
         return context
 
+@method_decorator(registrador_required, name='dispatch')
+class RegistroPagoUpdateView(UpdateView):
+    model = RegistroPago
+    form_class = RegistroPagoForm
+    template_name = 'gestion/registrar_pago.html'
+    success_url = reverse_lazy('gestion:manage_pagos')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['title'] = 'Editar Pago'
+        return context
+
 @method_decorator(registrador_required, name='dispatch') # Using custom decorator
 class RegistroPagoDeleteView(DeleteView):
     model = RegistroPago

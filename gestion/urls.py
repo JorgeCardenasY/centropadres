@@ -13,5 +13,6 @@ urlpatterns = [
     path('reporte/', views.reporte_curso, name='reporte_curso'),
     path('registrar-pago/', views.registrar_pago_view, name='registrar_pago'),
     path('pagos/', views.RegistroPagoListView.as_view(), name='manage_pagos'),
+    path('pagos/<int:pk>/editar/', views.RegistroPagoUpdateView.as_view(), name='edit_pago'),
     path('pagos/<int:pk>/eliminar/', views.RegistroPagoDeleteView.as_view(), name='delete_pago'),
 ]

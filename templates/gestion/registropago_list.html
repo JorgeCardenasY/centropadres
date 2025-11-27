@@ -45,6 +45,7 @@
                 <td>{{ pago.fecha }}</td>
                 <td>{{ pago.registrador }}</td>
                 <td>
+                    <a href="{% url 'gestion:edit_pago' pago.pk %}" class="btn btn-sm btn-primary">Editar</a>
                     <a href="{% url 'gestion:delete_pago' pago.pk %}" class="btn btn-sm btn-danger">Eliminar</a>
                 </td>
             </tr>
